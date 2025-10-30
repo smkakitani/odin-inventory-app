@@ -8,6 +8,7 @@ const app = express();
 
 // Import routers
 const indexRouter = require("./routes/indexRouter");
+const gamesRouter = require("./routes/gamesRouter");
 
 
 
@@ -21,8 +22,17 @@ app.set("query parser");
 // Enable req.body to parse client's output
 app.use(express.urlencoded({ extended: true }));
 
-// 
+// Using imported routes
+app.use("/games", gamesRouter);
 app.use("/", indexRouter);
+
+
+
+// Handling errors
+app.use((err, req, res, next) => {
+  console.error(err);
+  // res.status(500).send(err);
+});
 
 
 
