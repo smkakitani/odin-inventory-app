@@ -9,6 +9,7 @@ const app = express();
 // Import routers
 const indexRouter = require("./routes/indexRouter");
 const gamesRouter = require("./routes/gamesRouter");
+const listsRouter = require("./routes/listsRouter");
 
 
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Using imported routes
 app.use("/games", gamesRouter);
+app.use("/lists", listsRouter);
 app.use("/", indexRouter);
 
 

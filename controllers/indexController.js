@@ -1,7 +1,7 @@
 const links = [
   { href: "/", title: "Home" },
   { href: "games", title: "Games" },
-  { href: "list", title: "List" },
+  { href: "lists", title: "Lists" },
 ];
 
 

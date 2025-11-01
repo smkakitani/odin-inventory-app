@@ -41,7 +41,6 @@ const gamesCreateGet = (req, res) => {
 const gamesCreatePost = [
   validateGame,
   async (req, res) => {
-    // console.log("Creating games!!!");
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
