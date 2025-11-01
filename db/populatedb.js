@@ -25,6 +25,17 @@ CREATE TABLE IF NOT EXISTS game_info (
   platform INTEGER REFERENCES platform
 );
 
+CREATE TABLE IF NOT EXISTS lists (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR ( 255 ),
+  description VARCHAR ( 255 )
+);
+
+CREATE TABLE IF NOT EXISTS lists_game (
+  list_id INTEGER REFERENCES lists,
+  game_id INTEGER REFERENCES game  
+);
+
 INSERT INTO game (title, release_date, publisher, developer, genre)
   VALUES 
   ('Silent Hill f', '2025-09-25', 'Konami', 'NeoBards', 'Action-Adventure'),
