@@ -6,8 +6,15 @@ const links = [
 
 
 // 
-exports.indexHomeGet = (req, res) => {
+const indexHomeGet = (req, res) => {
   res.render("index", {
     links: links,
   });
+};
+
+
+
+module.exports = {
+  links,
+  indexHomeGet,
 };
