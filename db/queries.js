@@ -2,6 +2,7 @@ const pool = require("./pool");
 
 
 
+// Queries for Games
 async function getAllGames() {
   try {
     const { rows } = await pool.query("SELECT * FROM game");
@@ -9,8 +10,7 @@ async function getAllGames() {
     return rows;
   } catch (error) {
     console.error(`Error: `, error);
-  }
-  
+  }  
 }
 
 async function addGame({ title, release_date, publisher, developer, genre }) {
@@ -34,8 +34,49 @@ async function deleteGame(gameId) {
   await pool.query("DELETE FROM game WHERE id = $1", [gameId]);
   // const {rows} = await pool.query("SELECT * FROM game WHERE id = $1", [gameId]);
   console.log('deleting game ;-;');
-  // return rows;
 }
+
+
+
+// Queries for Lists
+async function getAllLists() {
+  try {
+    const { rows } = await pool.query("SELECT * FROM lists");
+
+    return rows;
+  } catch (error) {
+    console.error(`Query error: `, error);
+  }
+}
+
+async function addList({ name, description }) {
+  await pool.query("INSERT INTO lists (name, description) VALUES ($1, $2)", [name, description]);
+  // console.log(name, description);
+}
+
+async function getList(listId) {
+  try {
+    const { rows } = await pool.query("SELECT * FROM lists WHERE id = $1", [listId]);
+
+    return rows[0];
+  } catch (error) {
+    console.error("Query error: ", error);
+  }
+}
+
+async function editList(listId, { name, description }) {
+  await pool.query("UPDATE lists SET name = $2, description = $3 WHERE id = $1", [listId, name, description]);
+}
+
+async function deleteList(listId) {
+  // const {rows} = await pool.query("SELECT * FROM lists WHERE id = $1", [listId]);
+  // console.log(rows);
+  await pool.query("DELETE FROM lists WHERE id = $1", [listId]);
+  console.log('deleting list D:');
+}
+
+
+
 
 
 
@@ -45,4 +86,10 @@ module.exports = {
   getGame,
   editGame,
   deleteGame,
+// //////
+  getAllLists,
+  addList,
+  getList,
+  editList,
+  deleteList,
 };
