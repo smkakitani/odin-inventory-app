@@ -9,6 +9,7 @@ const validateList = [
   body("name").trim()
     .isLength({ min: 1, max: 255 }).withMessage("Name must be between 1 and 255 characters."),
   body("description").trim(),
+  query("query").trim(),
 ];
 
 
@@ -24,6 +25,46 @@ async function listsGet(req, res) {
     lists: lists,
   });
   // res.send("rendering lists...");
+}
+
+async function listsShowGet(req, res, next) {
+  const listInfo = await db.getList(req.params.id); // display list's information
+  const listName = req.params.name;
+  
+  // should return all games from specified list ID/name
+  const gamesList = await db.getGamesFromList(req.params.id); 
+  const query = req.query.query;
+  // console.log("from listsshow: ", req.query, query?.length);
+  // console.log(gamesList);
+
+  if (query?.length) {
+    const resultSearch = await db.searchGames(query);
+    // console.log(resultSearch);
+
+    return res.render("lists/showList", {
+      title: listName,
+      list: listInfo,
+      games: gamesList,
+      result: resultSearch,
+    });
+  }
+
+  res.render("lists/showList", {
+    title: listName,
+    list: listInfo,
+    games: gamesList,
+    // query: null,
+  });
+  // next();
+  // res.send("displaying list...");
+}
+
+async function listsAddGameToListPost(req, res, next) {
+  const gameId = req.params;
+  console.log('Game ID to add: ', gameId.id);
+  console.log('path: ', req.url, 'params: ', req.params, 'originalUrl: ', req.originalUrl);
+
+  res.redirect(".."); // redirecting to path before current one
 }
 
 function listsCreateGet(req, res) {
@@ -91,6 +132,10 @@ async function listsDeleteListPost(req, res) {
 
 module.exports = {
   listsGet,
+  // 
+  listsShowGet,
+  listsAddGameToListPost,
+  // 
   listsCreateGet,
   listsCreatePost,
   listsEditGet,

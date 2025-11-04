@@ -7,6 +7,13 @@ const listsRouter = Router();
 // Router to display lists
 listsRouter.get("/", listsController.listsGet);
 
+// Router for selecting a list
+listsRouter.get("/:id/:name/info/", listsController.listsShowGet);
+
+// Router for adding game to list
+// listsRouter.post("/{*splat}/info/:id/add", listsController.listsAddGameToListPost);
+listsRouter.post("/{:listId}/{:listName}/info/:gameId/add", listsController.listsAddGameToListPost);
+
 // Router for creating a new list
 listsRouter.get("/new", listsController.listsCreateGet);
 listsRouter.post("/new", listsController.listsCreatePost);

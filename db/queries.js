@@ -9,7 +9,7 @@ async function getAllGames() {
 
     return rows;
   } catch (error) {
-    console.error(`Error: `, error);
+    console.error(`Query error: `, error);
   }  
 }
 
@@ -36,6 +36,18 @@ async function deleteGame(gameId) {
   console.log('deleting game ;-;');
 }
 
+async function searchGames(str) {
+  try {
+    const { rows } = await pool.query("SELECT * FROM game WHERE title ILIKE '%'||$1||'%'", [str]);
+    // console.log(rows);
+
+  return rows;
+  } catch (error) {
+    console.error('Search games error: ', error);
+  }
+  
+}
+
 
 
 // Queries for Lists
@@ -52,6 +64,7 @@ async function getAllLists() {
 async function addList({ name, description }) {
   await pool.query("INSERT INTO lists (name, description) VALUES ($1, $2)", [name, description]);
   // console.log(name, description);
+  await pool.query("INSERT INTO lists_game (list_id) VALUES ($1)");
 }
 
 async function getList(listId) {
@@ -75,6 +88,24 @@ async function deleteList(listId) {
   console.log('deleting list D:');
 }
 
+async function getGamesFromList(listId) {
+  // lists_game 
+  // const { rows } = await pool.query("SELECT * FROM lists_game WHERE list_id = $1", [listId]);
+  // console.log(rows);
+
+  // Query that display name of list and game title
+  const { rows } = await pool.query("SELECT lists.name AS list_name, game.title AS game_title FROM lists_game JOIN lists ON lists_game.list_id = lists.id JOIN game ON lists_game.game_id = game.id WHERE lists_game.list_id = $1 ", [listId]);
+
+  // const { rows } = await pool.query("SELECT game.title AS game_title FROM lists_game JOIN lists ON lists_game.list_id = lists.id JOIN game ON lists_game.game_id = game.id;");
+  // console.log(rows);
+  return rows;
+}
+
+async function addGameToList(listId, gameId) {
+  // await pool.query("INSERT INTO lists_game (list_id, game_id) VALUES ($1, $2)", [listId, gameId]);
+  console.log(listId, gameId);
+}
+
 
 
 
@@ -86,10 +117,14 @@ module.exports = {
   getGame,
   editGame,
   deleteGame,
+  searchGames,
 // //////
   getAllLists,
   addList,
   getList,
   editList,
   deleteList,
+// /////
+  getGamesFromList,
+  addGameToList,
 };
