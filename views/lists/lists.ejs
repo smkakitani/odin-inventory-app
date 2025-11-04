@@ -16,7 +16,7 @@
       <% if (locals.lists) { %>
         <% lists.forEach(function(list) { %>
           <li>
-            <h2><%= list.name %></h2>
+            <h2><a href="/lists/<%= list.id %>/<%= list.name %>/info/"><%= list.name %></a></h2>
             <p><%= list.description %></p>
             <a href="/lists/<%= list.id %>/edit">edit</a>
             <form action="/lists/<%= list.id %>/delete" method="POST">
