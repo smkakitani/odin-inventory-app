@@ -9,7 +9,6 @@
   <div>
     <h1><%= list.name %></h1>
     <p><%= list.description %></p>
-
     <div class="game-list">
       <form action="" method="get" >
         <label>Search for game title: 
@@ -17,13 +16,18 @@
         </label>
         <button type="submit">search</button>
       </form>
-      <%- include("searchResult") %>
+      <%- include("searchResult") %>     
       <ul>
         <h2>Games:</h2>
         <% if (locals.games) { %>
           <% games.forEach(function(game) { %>
             <%# console.log(game) %>
-            <li><%= game["game_title"] %></li>
+            <li>
+              <%= game.title %> | <%= game.release_date.toISOString().substring(0, 10) %>
+              <form action="./<%= game.id %>/remove" method="post">
+                <button  type="submit" onclick="return confirm('Are you sure you want to remove this game?');">REMOVE</button>
+              </form>
+            </li>
           <% }) %>
         <% } %>
       </ul>
