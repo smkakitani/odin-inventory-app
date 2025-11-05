@@ -41,10 +41,14 @@ async function editGame(gameId, { title, release_date, publisher, developer, gen
 
 async function deleteGame(gameId) {
   try {
-    await pool.query("DELETE FROM game WHERE id = $1", [gameId]);
+    await pool.query("BEGIN")
+    await pool.query("DELETE FROM lists_game WHERE game_id = $1", [gameId])
+    await pool.query("DELETE FROM game WHERE id = $1", [gameId])
+    await pool.query("COMMIT")
   } catch (error) {
-    console.error('Query deleteGame error: ', error);
-  }  
+    await pool.query("ROLLBACK")
+    throw error
+  }
 }
 
 async function searchGames(str) {
