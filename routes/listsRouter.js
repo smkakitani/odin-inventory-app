@@ -11,8 +11,10 @@ listsRouter.get("/", listsController.listsGet);
 listsRouter.get("/:id/:name/info/", listsController.listsShowGet);
 
 // Router for adding game to list
-// listsRouter.post("/{*splat}/info/:id/add", listsController.listsAddGameToListPost);
 listsRouter.post("/{:listId}/{:listName}/info/:gameId/add", listsController.listsAddGameToListPost);
+
+// Router for removing game from list
+listsRouter.post("/{:listId}/{:listName}/info/:gameId/remove", listsController.listsRemoveGameFromListPost);
 
 // Router for creating a new list
 listsRouter.get("/new", listsController.listsCreateGet);

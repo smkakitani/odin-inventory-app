@@ -17,29 +17,24 @@ const validateList = [
 // 
 async function listsGet(req, res) {
   const lists = await db.getAllLists();
-  // console.log(lists);
 
   res.render("lists/lists", {
     title: "Lists",
     links: links,
     lists: lists,
   });
-  // res.send("rendering lists...");
 }
 
-async function listsShowGet(req, res, next) {
+async function listsShowGet(req, res) {
   const listInfo = await db.getList(req.params.id); // display list's information
   const listName = req.params.name;
   
-  // should return all games from specified list ID/name
+  // Should return all games from specified list ID/name
   const gamesList = await db.getGamesFromList(req.params.id); 
   const query = req.query.query;
-  // console.log("from listsshow: ", req.query, query?.length);
-  // console.log(gamesList);
 
   if (query?.length) {
     const resultSearch = await db.searchGames(query);
-    // console.log(resultSearch);
 
     return res.render("lists/showList", {
       title: listName,
@@ -53,16 +48,26 @@ async function listsShowGet(req, res, next) {
     title: listName,
     list: listInfo,
     games: gamesList,
-    // query: null,
   });
-  // next();
-  // res.send("displaying list...");
 }
 
-async function listsAddGameToListPost(req, res, next) {
-  const gameId = req.params;
-  console.log('Game ID to add: ', gameId.id);
-  console.log('path: ', req.url, 'params: ', req.params, 'originalUrl: ', req.originalUrl);
+async function listsAddGameToListPost(req, res) {
+  const { gameId, listId } = req.params;
+
+  // Search current list for current game
+  const gamesId = await db.searchGameIdOnList(listId, gameId);
+  if (gamesId.length === 0) {
+    // Current game ID isn't on list! Add it to the list
+    await db.addGameToList(listId, gameId);
+  }
+
+  res.redirect(".."); // redirecting to path before current one
+}
+
+async function listsRemoveGameFromListPost(req, res) {
+  const { gameId, listId } = req.params;
+
+  await db.removeGameFromList(gameId, listId);
 
   res.redirect(".."); // redirecting to path before current one
 }
@@ -123,7 +128,6 @@ const listsEditPost = [
 
 async function listsDeleteListPost(req, res) {
   const listId = req.params.id;
-    // console.log('List ID: ', listId);
     await db.deleteList(listId);
   
     res.redirect("/lists");
@@ -135,6 +139,7 @@ module.exports = {
   // 
   listsShowGet,
   listsAddGameToListPost,
+  listsRemoveGameFromListPost,
   // 
   listsCreateGet,
   listsCreatePost,
