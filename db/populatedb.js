@@ -31,6 +31,11 @@ INSERT INTO game (title, release_date, publisher, developer, genre)
   ('Silent Hill f', '2025-09-25', 'Konami', 'NeoBards', 'Action-Adventure'),
   ('No More Heroes', '2007-12-06', 'Marvelous Entertainment', 'Grasshopper Manufacture', 'Action-Adventure'),
   ('Final Fantasy Tactics', '1997-06-20', 'Square Enix', 'Square Enix', 'Strategy');
+
+INSERT INTO lists (name, description)
+  VALUES
+  ('My backlog :3', 'List with games that I'll play soon...'),
+  ('Horror games that you should play!', 'some horror games!');
 `;
 
 
