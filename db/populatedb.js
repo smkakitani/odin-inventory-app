@@ -45,14 +45,20 @@ INSERT INTO lists (name, description)
 async function main() {
   console.log("seeding...");
 
-  const client = new Client({
-    connectionString: process.env.CONNECTION_STRING_LOCAL_DB || argv
+  try {
+    const client = new Client({
+    connectionString: process.argv[2] || process.env.CONNECTION_STRING_LOCAL_DB
   });
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
+    await client.connect();
+    await client.query(SQL);
+    await client.end();
   
-  console.log("done");
+    
+    return console.log("done");
+  } catch (error) {
+    console.error('Trying to connect to db failed, error: ', error);
+  }
+  
 }
 
 main();
