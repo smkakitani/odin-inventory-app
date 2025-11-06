@@ -35,7 +35,7 @@ INSERT INTO game (title, release_date, publisher, developer, genre)
 
 INSERT INTO lists (name, description)
   VALUES
-  ('My backlog :3', 'List with games that I'll play soon...'),
+  ('My backlog :3', 'List with games that I''ll play soon...'),
   ('Horror games that you should play!', 'some horror games!');
 `;
 
